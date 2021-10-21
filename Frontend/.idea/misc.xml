@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/InstantEatFrotendDev/Frontend/app/src/main/res/layout/activity_main.xml" value="0.15625" />
+        <entry key="..\:/InstantEatFrotendDev/Frontend/app/src/main/res/layout/activity_phone_authentication.xml" value="0.4" />
+        <entry key="..\:/InstantEatFrotendDev/Frontend/app/src/main/res/layout/row_layout.xml" value="0.2" />
         <entry key="..\:/InstantEatsFrontendDev/Frontend/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/InstantEatsFrontendDev/Frontend/app/src/main/res/layout/activity_phone_authentication.xml" value="0.264" />
       </map>

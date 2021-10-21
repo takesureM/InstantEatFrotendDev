@@ -10,11 +10,11 @@
     tools:context=".PhoneAuthentication">
 
 
-    <TextView
+    <ImageView
         android:id="@+id/iconIv"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:text="Logo"
+        android:src="@drawable/phone_android"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="70dp"
         android:textAllCaps="true"

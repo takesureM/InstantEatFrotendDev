@@ -3,17 +3,12 @@ package com.example.frontend
 import android.annotation.SuppressLint
 import android.app.ProgressDialog
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
-import com.example.frontend.databinding.ActivityMainBinding
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
@@ -24,10 +19,9 @@ import java.util.concurrent.TimeUnit
 
 class PhoneAuthentication : AppCompatActivity() {
 
-//    // view binding
-//    private lateinit var binding: ActivityMainBinding
 
-    // if code sending failed, will used to resend
+
+    // if code sending failed, will resend
     private var forceResendingToken: PhoneAuthProvider.ForceResendingToken? = null
 
     private var mCallBacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks? = null
@@ -45,8 +39,13 @@ class PhoneAuthentication : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_phone_authentication)
 
-        val phoneL1 = findViewById<TextView>(R.id.phoneL1)
-        val codeL1 = findViewById<TextView>(R.id.codeL1)
+//        window.setFlags(
+//            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//            WindowManager.LayoutParams.FLAG_FULLSCREEN
+//        )
+
+        val phoneL1 = findViewById<LinearLayout>(R.id.phoneL1)
+        val codeL1 = findViewById<LinearLayout>(R.id.codeL1)
         val phoneContinueBtn = findViewById<Button>(R.id.phoneContinueBtn)
         val codeSubmitBtn = findViewById<Button>(R.id.codeSubmitBtn)
         val resendCodeTv = findViewById<TextView>(R.id.resendCodeTv)
@@ -55,8 +54,8 @@ class PhoneAuthentication : AppCompatActivity() {
         val phoneEt = findViewById<EditText>(R.id.phoneEt)
         val codeEt = findViewById<EditText>(R.id.codeEt)
 
-        phoneL1.visibility = View.GONE
-        codeL1.visibility = View.VISIBLE
+        phoneL1.visibility = View.VISIBLE
+        codeL1.visibility = View.GONE
 
 
 
@@ -91,11 +90,10 @@ class PhoneAuthentication : AppCompatActivity() {
                 Log.d(TAG,"onCodeSent: $verificationId")
 
                 //Hide phone layout, show code layout
-                phoneL1.visibility = View.VISIBLE
-                codeL1.visibility = View.GONE
+                phoneL1.visibility = View.GONE
+                codeL1.visibility = View.VISIBLE
                 Toast.makeText(this@PhoneAuthentication, "Verification code sent....", Toast.LENGTH_SHORT).show()
                 codeSendCodeTv.text = "Please type the verification code we send to ${phoneEt.text.toString().trim()}"
-
 
             }
 
@@ -124,17 +122,22 @@ class PhoneAuthentication : AppCompatActivity() {
         }
         // codeSubmitBtn click: input phone number, validate, verify phone number with verification code
         codeSubmitBtn.setOnClickListener {
+            //send information to the api server
             // Input verification code
             val code = codeEt.text.toString().trim()
             if (TextUtils.isEmpty(code)) {
                 Toast.makeText(this@PhoneAuthentication, "Please enter verification code", Toast.LENGTH_SHORT).show()
             } else {
                 verifyPhoneNumberWithCode(mVerificationId, code)
+
+
+
             }
         }
 
 
     }
+
 
     private fun startPhoneNumberVerification(phone: String) {
         Log.d(TAG,"startPhoneNumberVerification: $phone")
@@ -165,10 +168,9 @@ class PhoneAuthentication : AppCompatActivity() {
             .setForceResendingToken(token)
             .build()
 
-        PhoneAuthProvider.verifyPhoneNumber(options)
     }
 
-    private fun verifyPhoneNumberWithCode(verificationId: String?, code: String) {
+    private fun verifyPhoneNumberWithCode(verificationId: String?, code: String)  {
 
         Log.d(TAG,"verifyPhoneNumberWithCode: $verificationId $code")
 
@@ -177,9 +179,10 @@ class PhoneAuthentication : AppCompatActivity() {
 
         val credential = PhoneAuthProvider.getCredential(verificationId!!, code)
         signInWithPhoneAuthCredential(credential)
+
     }
 
-    private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
+    private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential)  {
 
         Log.d(TAG,"verifyPhoneNumberWithCode: $credential")
 
@@ -190,12 +193,11 @@ class PhoneAuthentication : AppCompatActivity() {
                 // login success
                 progressDialog.dismiss()
                 val phone = firebaseAuth.currentUser!!.phoneNumber
-                Toast.makeText(this, "Logged In as ", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Logged In as $phone", Toast.LENGTH_SHORT).show()
 
                 //Start main activity
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
-
             }
             .addOnFailureListener { e ->
                 // login failed
@@ -203,5 +205,7 @@ class PhoneAuthentication : AppCompatActivity() {
                 Toast.makeText(this, "${e.message}", Toast.LENGTH_SHORT).show()
 
             }
+
+
     }
 }
